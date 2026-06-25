@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanaka Maha Lakshmi - Resume</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #34495e;
+      --text-color: #333333;
+      --text-light: #666666;
+      --border-color: #e2e8f0;
+      --accent-color: #4f46e5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-color);
+      background-color: #f8fafc;
+      line-height: 1.5;
+      padding: 40px 20px;
+    }
+
+    .resume-container {
+      max-width: 850px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 40px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Header Section */
+    .resume-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .name-title h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    .contact-info {
+      list-style: none;
+      text-align: right;
+      font-size: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .contact-info li {
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .contact-info i {
+      color: var(--accent-color);
+      width: 16px;
+      text-align: center;
+    }
+
+    .contact-info a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .contact-info a:hover {
+      color: var(--accent-color);
+    }
+
+    /* Summary Section */
+    .section-summary {
+      margin-bottom: 28px;
+    }
+
+    .section-title-center {
+      font-family: 'Outfit', sans-serif;
+      text-align: center;
+      font-size: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--primary-color);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .section-title-center::before,
+    .section-title-center::after {
+      content: "";
+      height: 1px;
+      background: var(--border-color);
+      flex-grow: 1;
+      max-width: 100px;
+    }
+
+    .summary-text {
+      text-align: justify;
+      font-size: 0.95rem;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+
+    /* Two Column Layout */
+    .resume-body {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 32px;
+    }
+
+    .left-col {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--primary-color);
+      border-bottom: 1.5px solid var(--border-color);
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title i {
+      color: var(--accent-color);
+      font-size: 1rem;
+    }
+
+    /* Blocks & Content Details */
+    .detail-block {
+      margin-bottom: 16px;
+    }
+
+    .detail-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+
+    .detail-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .detail-subtitle {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-light);
+    }
+
+    .detail-date {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    .detail-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    .detail-list li {
+      position: relative;
+      padding-left: 14px;
+      font-size: 0.88rem;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+
+    .detail-list li::before {
+      content: "•";
+      color: var(--accent-color);
+      position: absolute;
+      left: 0;
+      font-weight: bold;
+    }
+
+    /* Skills and Additional List */
+    .skills-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .skills-category {
+      font-size: 0.9rem;
+    }
+
+    .skills-category strong {
+      color: var(--primary-color);
+    }
+
+    .skills-tags {
+      color: var(--text-light);
+      margin-top: 2px;
+      font-size: 0.88rem;
+    }
+
+    .bullet-list {
+      list-style-type: none;
+    }
+
+    .bullet-list li {
+      position: relative;
+      padding-left: 16px;
+      font-size: 0.88rem;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .bullet-list li::before {
+      content: "▪";
+      color: var(--accent-color);
+      position: absolute;
+      left: 0;
+      font-size: 0.75rem;
+      top: 1px;
+    }
+
+    /* Action Toolbar (for browser view only) */
+    .toolbar {
+      max-width: 850px;
+      margin: 0 auto 16px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .btn-action {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--accent-color);
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2);
+      transition: all 0.2s ease;
+    }
+
+    .btn-action:hover {
+      background-color: #4338ca;
+      transform: translateY(-1px);
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background-color: #ffffff;
+        padding: 0;
+      }
+      .resume-container {
+        box-shadow: none;
+        padding: 0;
+        border: none;
+        max-width: 100%;
+      }
+      .toolbar {
+        display: none;
+      }
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 10px;
+      }
+      .resume-container {
+        padding: 24px 20px;
+      }
+      .resume-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 16px;
+      }
+      .contact-info {
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+      }
+      .contact-info li {
+        justify-content: center;
+      }
+      .resume-body {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Browser view only toolbar -->
+  <div class="toolbar">
+    <button class="btn-action" onclick="window.print()">
+      <i class="fa-solid fa-print"></i> Print Resume / Save PDF
+    </button>
+  </div>
+
+  <div class="resume-container">
+    <!-- Header -->
+    <header class="resume-header">
+      <div class="name-title">
+        <h1>Kanaka Maha Lakshmi</h1>
+      </div>
+      <ul class="contact-info">
+        <li><i class="fa-solid fa-phone"></i> +91 9701642706</li>
+        <li><i class="fa-solid fa-envelope"></i> <a href="mailto:mahipediredla24@gmail.com">mahipediredla24@gmail.com</a></li>
+        <li><i class="fa-solid fa-location-dot"></i> Andhra Pradesh, India</li>
+        <li><i class="fa-brands fa-github"></i> <a href="https://github.com/mahii249" target="_blank">github.com/mahii249</a></li>
+        <li><i class="fa-brands fa-linkedin"></i> <a href="https://www.linkedin.com/in/mahalakshmi-pediredla/" target="_blank">linkedin.com/in/mahalakshmi-pediredla</a></li>
+      </ul>
+    </header>
+
+    <!-- Summary -->
+    <section class="section-summary">
+      <h2 class="section-title-center">Summary</h2>
+      <p class="summary-text">
+        Detail-oriented and motivated Computer Science student with hands-on experience in frontend development. Proficient in HTML, CSS and JavaScript with a strong focus on building responsive and intuitive user interfaces. Eager to apply technical skills in real-world applications and grow as a frontend developer in fast-paced and collaborative environments.
+      </p>
+    </section>
+
+    <!-- Resume Body Layout -->
+    <div class="resume-body">
+      <!-- Left Column -->
+      <div class="left-col">
+        <!-- Education -->
+        <section>
+          <h2 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Education History</h2>
+          
+          <div class="detail-block">
+            <div class="detail-header">
+              <span class="detail-title">Aven Engineering College</span>
+              <span class="detail-date">2022 - 2026</span>
+            </div>
+            <div class="detail-subtitle">Bachelor's of Technology</div>
+            <ul class="detail-list">
+              <li>Graduated with honors</li>
+              <li>Achieved CGPA: <strong>8.4</strong></li>
+            </ul>
+          </div>
+
+          <div class="detail-block">
+            <div class="detail-header">
+              <span class="detail-title">Sri Krishna Junior College</span>
+              <span class="detail-date">2020 - 2022</span>
+            </div>
+            <div class="detail-subtitle">12th Standard (Intermediate)</div>
+            <ul class="detail-list">
+              <li>Strong foundation in MPC</li>
+              <li>Achieved Percentage: <strong>70%</strong></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Skills -->
+        <section>
+          <h2 class="section-title"><i class="fa-solid fa-laptop-code"></i> Skills</h2>
+          <div class="skills-list">
+            <div class="skills-category">
+              <strong>Web-Technologies:</strong>
+              <div class="skills-tags">HTML, CSS, Git, GitHub, API, Postman</div>
+            </div>
+            <div class="skills-category">
+              <strong>Programming Languages:</strong>
+              <div class="skills-tags">Python, Java, NodeJS, JavaScript</div>
+            </div>
+            <div class="skills-category">
+              <strong>Professional Skills:</strong>
+              <ul class="detail-list" style="margin-top: 4px;">
+                <li>Strong organization and time management</li>
+                <li>Exceptional communication and interpersonal skills</li>
+                <li>Ability to work independently and in a team</li>
+                <li>Detail-oriented and multi-tasking</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Additional Information -->
+        <section>
+          <h2 class="section-title"><i class="fa-solid fa-circle-info"></i> Additional Info</h2>
+          <ul class="bullet-list">
+            <li><strong>AI Tools:</strong> GitHub Copilot, Notion</li>
+            <li><strong>Certifications:</strong> Python (Mentiby), Web Development</li>
+            <li><strong>Documents:</strong> Internship Certificate from Embrizon Technologies</li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-col">
+        <!-- Internship & Projects -->
+        <section>
+          <h2 class="section-title"><i class="fa-solid fa-briefcase"></i> Internship & Projects</h2>
+
+          <!-- Internship -->
+          <div class="detail-block">
+            <div class="detail-header">
+              <span class="detail-title">Frontend Developer Intern</span>
+              <span class="detail-date">Jun 2025 - Oct 2023</span>
+            </div>
+            <div class="detail-subtitle">Embrizon Technologies</div>
+            <ul class="detail-list">
+              <li>Built a responsive Pizza Web Application using HTML, CSS, JavaScript and Python for seamless user experience.</li>
+              <li>Designed and integrated a MySQL database for efficient data management of customer and order information.</li>
+              <li>Enhanced application functionality by implementing dynamic features and backend integration.</li>
+            </ul>
+          </div>
+
+          <!-- Project 1 -->
+          <div class="detail-block">
+            <div class="detail-header">
+              <span class="detail-title">Alumni-Networking Portal</span>
+              <span class="detail-date">Academic Project</span>
+            </div>
+            <div class="detail-subtitle">Web-based Platform</div>
+            <ul class="detail-list">
+              <li>Built a web-based Alumni Networking Portal enabling seamless interaction between students, alumni, and administrators.</li>
+              <li>Developed core functionalities such as user registration, profile management, and job posting systems.</li>
+              <li>Integrated frontend and backend technologies using HTML, CSS, JavaScript and database for efficient data handling.</li>
+            </ul>
+          </div>
+
+          <!-- Project 2 -->
+          <div class="detail-block">
+            <div class="detail-header">
+              <span class="detail-title">Portfolio-Website</span>
+              <span class="detail-date">Personal Project</span>
+            </div>
+            <div class="detail-subtitle">Personal Brand Showcase</div>
+            <ul class="detail-list">
+              <li>Designed and developed a responsive and visually appealing personal portfolio website using HTML, CSS and JavaScript.</li>
+              <li>Implemented mobile-friendly and interactive features to enhance user experience and personal branding.</li>
+              <li>Customized UI components and applied modern styling techniques for a clean and professional design.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
