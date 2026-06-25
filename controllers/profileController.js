@@ -2,6 +2,9 @@ const axios = require('axios');
 const db = require('../config/db');
 require('dotenv').config();
 
+// Bypass SSL certificate verification issues for local environments (e.g., behind proxies/firewalls)
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 // Cache duration in minutes, default to 10
 const CACHE_DURATION_MINUTES = parseInt(process.env.CACHE_DURATION_MINUTES) || 10;
 
