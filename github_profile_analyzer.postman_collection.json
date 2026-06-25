@@ -1,0 +1,103 @@
+{
+  "info": {
+    "name": "GitHub Profile Analyzer API",
+    "description": "Postman collection to test and interact with the GitHub Profile Analyzer backend service. Make sure the local server is running on port 3000.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Welcome Endpoint (Docs)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            ""
+          ]
+        },
+        "description": "Fetch the API root info documentation."
+      },
+      "response": []
+    },
+    {
+      "name": "Analyze & Store Profile (POST)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"octocat\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/profiles",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "profiles"
+          ]
+        },
+        "description": "Trigger the public GitHub API integration, calculate insights, and persist them to MySQL."
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Analyzed Profiles (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/profiles",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "profiles"
+          ]
+        },
+        "description": "Retrieve all profiles that have been analyzed and stored in the database."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Single Stored Profile (GET)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/profiles/octocat",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "profiles",
+            "octocat"
+          ]
+        },
+        "description": "Fetch the database insights for a specific username."
+      },
+      "response": []
+    }
+  ]
+}
