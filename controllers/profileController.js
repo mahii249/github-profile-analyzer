@@ -406,3 +406,37 @@ exports.getProfileByUsername = async (req, res) => {
     });
   }
 };
+
+// 4. Delete Stored Profile
+exports.deleteProfile = async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    if (!username) {
+      return res.status(400).json({ error: 'Username parameter is required.' });
+    }
+
+    const cleanUsername = username.trim();
+    console.log(`🗑️ Deleting profile for GitHub user: ${cleanUsername}`);
+
+    const [result] = await db.query('DELETE FROM github_profiles WHERE username = ?', [cleanUsername]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        error: `No stored profile found for username '${cleanUsername}'.`
+      });
+    }
+
+    console.log(`✅ Profile deleted successfully for: ${cleanUsername}`);
+    return res.status(200).json({
+      message: `Profile analysis for '${cleanUsername}' was successfully deleted.`
+    });
+  } catch (error) {
+    console.error('❌ Error deleting profile:', error.message);
+    return res.status(500).json({
+      error: 'An internal server error occurred while deleting the profile.',
+      details: error.message
+    });
+  }
+};
+

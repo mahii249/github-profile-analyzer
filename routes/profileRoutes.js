@@ -11,4 +11,7 @@ router.get('/', profileController.getAllProfiles);
 // Route to get details of a single analyzed profile from database
 router.get('/:username', profileController.getProfileByUsername);
 
+// Route to delete a stored profile by username
+router.delete('/:username', profileController.deleteProfile);
+
 module.exports = router;

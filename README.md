@@ -14,10 +14,12 @@ This project was built for a college assignment submission and meets all require
   - Summarizes **Language Usage** and ranks languages by the number of repositories they appear in.
   - Identifies their **Most Starred Repository** details (name, stargazers count, URL).
 - **MySQL Persistence**: Saves the analyzed profile data. Updates existing profiles automatically on subsequent requests (`INSERT ... ON DUPLICATE KEY UPDATE`).
+- **Interactive Dashboard**: A premium, responsive, glassmorphic frontend UI served at `/dashboard` featuring real-time skeleton loading, animated language doughnut and size charts (Chart.js), and database history searching/sorting.
 - **REST APIs**:
   - `POST /api/profiles` to analyze and store a user profile.
   - `GET /api/profiles` to list all previously analyzed profiles.
   - `GET /api/profiles/:username` to fetch detailed database insights of a single user.
+  - `DELETE /api/profiles/:username` to delete a stored profile analysis from the database.
 
 ---
 
@@ -227,3 +229,31 @@ Returns database details of a specific username.
 - **Method**: `GET`
 - **URL**: `http://localhost:3000/api/profiles/:username`
 - **Response**: `200 OK` (JSON) if exists; `404 Not Found` if the user has not been analyzed yet.
+
+### 5. Delete Stored Profile
+Deletes a stored profile analysis from the database.
+- **Method**: `DELETE`
+- **URL**: `http://localhost:3000/api/profiles/:username`
+- **Response**: `200 OK` (JSON) on success; `404 Not Found` if the profile does not exist.
+  - Example Response:
+  ```json
+  {
+    "message": "Profile analysis for 'octocat' was successfully deleted."
+  }
+  ```
+
+---
+
+## Frontend Interactive Dashboard
+
+The project features a premium, responsive frontend dashboard served directly by the Express backend.
+
+- **URL**: `http://localhost:3000/dashboard`
+- **Aesthetic**: Modern tech look with glassmorphic cards, deep slate dark background, custom scrollbars, and glowing colored borders.
+- **Interactive Features**:
+  - **Live Search**: Submit a username to run analysis, showcasing glowing animated skeleton loading screens while fetching from the API.
+  - **Metrics Dashboard**: Clear summary cards displaying total stars, forks, total repository size, and average star ratio.
+  - **Data Visualization**: Responsive doughnut charts for repository language share and horizontal bar charts for language size distributions (powered by Chart.js).
+  - **Spotlight Panel**: Highlights the user's most popular repository.
+  - **Database History**: Fully search, sort (by date, stars, forks, repos, followers), and page through previously analyzed profiles in the MySQL database.
+  - **Load & Delete**: Instantly reload any profile from the history list, or delete records from the database using the new DELETE endpoint.

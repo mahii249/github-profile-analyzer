@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitScope - GitHub Profile Analyzer</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header Section -->
+    <header class="app-header">
+      <div class="logo-area">
+        <i class="fab fa-github logo-icon"></i>
+        <h1>Git<span>Scope</span></h1>
+      </div>
+      <p class="subtitle">Enter a GitHub username to extract rich repository statistics, language insights, and database historical records.</p>
+    </header>
+
+    <!-- Search Section -->
+    <section class="search-section card-glass">
+      <form id="search-form" class="search-form">
+        <div class="input-wrapper">
+          <i class="fa fa-search search-input-icon"></i>
+          <input type="text" id="username-input" placeholder="e.g. octocat, torvalds, gaearon..." required autocomplete="off">
+        </div>
+        <div class="search-controls">
+          <label class="checkbox-container">
+            <input type="checkbox" id="force-checkbox">
+            <span class="checkmark"></span>
+            <span class="label-text">Force refresh from GitHub API</span>
+          </label>
+          <button type="submit" class="btn-primary" id="search-btn">
+            <span class="btn-text">Analyze Profile</span>
+            <i class="fa fa-chart-line btn-icon"></i>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Status Message Alert -->
+    <div id="status-alert" class="alert hidden">
+      <i class="fa-solid alert-icon"></i>
+      <span class="alert-message"></span>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+      <!-- Loading Skeleton State (Displayed while loading) -->
+      <div id="skeleton-loader" class="dashboard-grid hidden">
+        <!-- Profile Skeleton -->
+        <div class="profile-card card-glass skeleton-card">
+          <div class="skeleton skeleton-avatar"></div>
+          <div class="skeleton skeleton-text skeleton-title"></div>
+          <div class="skeleton skeleton-text skeleton-subtitle"></div>
+          <div class="skeleton-stats-row">
+            <div class="skeleton skeleton-stat"></div>
+            <div class="skeleton skeleton-stat"></div>
+            <div class="skeleton skeleton-stat"></div>
+          </div>
+          <div class="skeleton skeleton-text skeleton-para"></div>
+          <div class="skeleton skeleton-text"></div>
+        </div>
+        
+        <!-- Metrics and Charts Skeletons -->
+        <div class="details-pane">
+          <div class="metrics-grid">
+            <div class="metric-card card-glass skeleton-card">
+              <div class="skeleton skeleton-text skeleton-title"></div>
+              <div class="skeleton skeleton-text skeleton-value"></div>
+            </div>
+            <div class="metric-card card-glass skeleton-card">
+              <div class="skeleton skeleton-text skeleton-title"></div>
+              <div class="skeleton skeleton-text skeleton-value"></div>
+            </div>
+            <div class="metric-card card-glass skeleton-card">
+              <div class="skeleton skeleton-text skeleton-title"></div>
+              <div class="skeleton skeleton-text skeleton-value"></div>
+            </div>
+            <div class="metric-card card-glass skeleton-card">
+              <div class="skeleton skeleton-text skeleton-title"></div>
+              <div class="skeleton skeleton-text skeleton-value"></div>
+            </div>
+          </div>
+          <div class="charts-row">
+            <div class="chart-container card-glass skeleton-card">
+              <div class="skeleton skeleton-text skeleton-title"></div>
+              <div class="skeleton skeleton-chart"></div>
+            </div>
+            <div class="chart-container card-glass skeleton-card">
+              <div class="skeleton skeleton-text skeleton-title"></div>
+              <div class="skeleton skeleton-chart"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Dashboard Panel (Populated on data retrieval) -->
+      <div id="dashboard-panel" class="dashboard-grid hidden">
+        <!-- Left Column: User Profile Card -->
+        <section class="profile-card card-glass">
+          <div class="profile-header">
+            <img id="user-avatar" src="" alt="User Avatar" class="user-avatar">
+            <h2 id="user-name"></h2>
+            <p id="user-login"></p>
+            <a id="user-github-link" href="" target="_blank" class="btn-secondary">
+              <span>View GitHub Profile</span>
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+
+          <hr class="card-divider">
+
+          <div class="profile-stats">
+            <div class="stat-box">
+              <span class="stat-value" id="stat-repos">-</span>
+              <span class="stat-label">Repos</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-value" id="stat-followers">-</span>
+              <span class="stat-label">Followers</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-value" id="stat-following">-</span>
+              <span class="stat-label">Following</span>
+            </div>
+          </div>
+
+          <hr class="card-divider">
+
+          <ul class="profile-details-list">
+            <li id="detail-bio-item" class="hidden">
+              <i class="fa-solid fa-quote-left icon"></i>
+              <span id="user-bio" class="bio-text"></span>
+            </li>
+            <li id="detail-company-item">
+              <i class="fa-solid fa-building icon"></i>
+              <span id="user-company">-</span>
+            </li>
+            <li id="detail-location-item">
+              <i class="fa-solid fa-map-marker-alt icon"></i>
+              <span id="user-location">-</span>
+            </li>
+            <li id="detail-gists-item">
+              <i class="fa-solid fa-code icon"></i>
+              <span>Gists: <strong id="user-gists">-</strong></span>
+            </li>
+            <li id="detail-joined-item">
+              <i class="fa-solid fa-calendar-alt icon"></i>
+              <span>Joined: <span id="user-joined">-</span></span>
+            </li>
+            <li id="detail-analyzed-item">
+              <i class="fa-solid fa-clock-rotate-left icon"></i>
+              <span>Analyzed: <span id="user-analyzed">-</span></span>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Right Column: Stats Overview, Visualizations, Spotlight -->
+        <div class="details-pane">
+          <!-- Numerical Metrics Row -->
+          <section class="metrics-grid">
+            <div class="metric-card card-glass glow-indigo">
+              <div class="metric-icon bg-indigo">
+                <i class="fa-solid fa-star"></i>
+              </div>
+              <div class="metric-content">
+                <h3>Total Stars</h3>
+                <p class="metric-value" id="metric-total-stars">-</p>
+                <span class="metric-description">Stars across public repos</span>
+              </div>
+            </div>
+
+            <div class="metric-card card-glass glow-violet">
+              <div class="metric-icon bg-violet">
+                <i class="fa-solid fa-code-branch"></i>
+              </div>
+              <div class="metric-content">
+                <h3>Total Forks</h3>
+                <p class="metric-value" id="metric-total-forks">-</p>
+                <span class="metric-description">Forks across public repos</span>
+              </div>
+            </div>
+
+            <div class="metric-card card-glass glow-cyan">
+              <div class="metric-icon bg-cyan">
+                <i class="fa-solid fa-database"></i>
+              </div>
+              <div class="metric-content">
+                <h3>Total Size</h3>
+                <p class="metric-value" id="metric-total-size">-</p>
+                <span class="metric-description">Cumulative code size</span>
+              </div>
+            </div>
+
+            <div class="metric-card card-glass glow-rose">
+              <div class="metric-icon bg-rose">
+                <i class="fa-solid fa-calculator"></i>
+              </div>
+              <div class="metric-content">
+                <h3>Star Ratio</h3>
+                <p class="metric-value" id="metric-star-ratio">-</p>
+                <span class="metric-description">Average stars per repo</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Charts Row (Language Insights) -->
+          <div class="charts-row">
+            <section class="chart-container card-glass">
+              <h3><i class="fa-solid fa-pie-chart icon-color-indigo"></i>Language Repository Share</h3>
+              <div class="chart-wrapper">
+                <canvas id="language-pie-chart"></canvas>
+              </div>
+            </section>
+            
+            <section class="chart-container card-glass">
+              <h3><i class="fa-solid fa-bar-chart icon-color-cyan"></i>Language Size Distribution (KB)</h3>
+              <div class="chart-wrapper">
+                <canvas id="language-bar-chart"></canvas>
+              </div>
+            </section>
+          </div>
+
+          <!-- Spotlight: Most Starred Repository -->
+          <section id="spotlight-section" class="spotlight-card card-glass glow-gold">
+            <div class="spotlight-header">
+              <span class="badge-gold"><i class="fa-solid fa-trophy"></i> Top Repository</span>
+              <h3 id="spotlight-repo-name">-</h3>
+            </div>
+            <p class="spotlight-desc">Most popular repository by stargazers count.</p>
+            <div class="spotlight-footer">
+              <div class="spotlight-meta">
+                <span><i class="fa-solid fa-star star-color"></i> <strong id="spotlight-repo-stars">-</strong> Stars</span>
+                <span id="spotlight-repo-url-wrapper"><a id="spotlight-repo-link" href="" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open Repository</a></span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- ANALYSIS HISTORY LIST SECTION -->
+    <section class="history-section card-glass">
+      <div class="history-header">
+        <div class="history-title-area">
+          <i class="fa-solid fa-clock-rotate-left title-icon"></i>
+          <h2>Analysis Database History</h2>
+        </div>
+        <p class="history-description">Previously analyzed GitHub profiles saved in local database.</p>
+      </div>
+
+      <!-- Filters & Controls Row -->
+      <div class="history-controls">
+        <div class="search-box">
+          <i class="fa fa-search search-icon"></i>
+          <input type="text" id="history-search" placeholder="Search by name, location...">
+        </div>
+        <div class="filter-group">
+          <div class="sort-select-wrapper">
+            <label for="history-sort-by">Sort By:</label>
+            <select id="history-sort-by">
+              <option value="analyzed_at">Date Analyzed</option>
+              <option value="total_stars">Total Stars</option>
+              <option value="total_forks">Total Forks</option>
+              <option value="public_repos">Public Repos</option>
+              <option value="followers">Followers</option>
+            </select>
+          </div>
+          <div class="sort-select-wrapper">
+            <label for="history-order">Order:</label>
+            <select id="history-order">
+              <option value="DESC">Descending</option>
+              <option value="ASC">Ascending</option>
+            </select>
+          </div>
+          <button id="refresh-history-btn" class="btn-icon-only" title="Refresh history">
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- History Table container -->
+      <div class="table-responsive">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Profile</th>
+              <th>Public Repos</th>
+              <th>Followers</th>
+              <th>Total Stars</th>
+              <th>Total Forks</th>
+              <th>Analyzed At</th>
+              <th class="actions-col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="history-table-body">
+            <!-- Dynamic rows go here -->
+            <tr>
+              <td colspan="7" class="text-center">Loading database history...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- History Pagination Row -->
+      <div class="pagination-container">
+        <span class="pagination-info" id="pagination-info">Showing 0 of 0 records</span>
+        <div class="pagination-buttons">
+          <button id="prev-page-btn" class="btn-secondary" disabled>
+            <i class="fa fa-chevron-left"></i>
+            <span>Previous</span>
+          </button>
+          <button id="next-page-btn" class="btn-secondary" disabled>
+            <span>Next</span>
+            <i class="fa fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>&copy; 2026 GitScope. Built with Express, MySQL, and Chart.js.</p>
+    </footer>
+  </div>
+
+  <!-- Dynamic JS Script -->
+  <script src="dashboard.js"></script>
+</body>
+</html>
